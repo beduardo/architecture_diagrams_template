@@ -1,0 +1,61 @@
+@startuml 07_Visualizacao_De_Componentes_Alocacoes
+!include ../../deps/c4_model/C4_Component.puml
+
+HIDE_STEREOTYPE()
+' LAYOUT_AS_SKETCH()
+
+scale 2000 width
+header Visualização de Componentes
+left footer [Empresa do Documento]
+title <i>MVC Application</i>\n<b>Alocações</b>
+
+' Usuários
+Person(pAC, "Time AC")
+Person(pLogistica, "Time Logística")
+
+' Outros Containers
+' Container em foco
+Container_Boundary(bMVC, "MVC Application") {
+
+    Component(compAprovalPO, "Aprovar PO", "view/controller", "<i>[Vendas]</i>")
+    Component(compAvail, "Informar Disponibilidade", "view/controller", "<i>[Produção]</i>")
+    Component(compCadViagens, "Manter Viagens", "view/controller", "<i>[AC]</i>")
+
+    Component(compNomearVolume, "Nomear Volume", "view/controller")
+    Component(compAlocarPO, "Alocar PO", "view/controller")
+    Component(compRodarSimulacao, "Rodar Simulação", "view/controller")
+    Component(compAprovarResultado, "Aprovar Resultado Simulação", "view/controller", "Aprovação em conjunto")
+
+    ' Services
+    Component(compServSimulacao, "Simulador Aprovação e Alocação", "service", "")
+    Component(compServNotificacoes, "Notificações", "service", "")
+
+    ' Relações de Usuário
+    Rel(pAC, compAlocarPO, "usa")
+    Rel(pAC, compRodarSimulacao, "usa")
+    Rel(pAC, compAprovarResultado, "usa")
+    Rel(pLogistica, compNomearVolume, "usa")
+    Rel(pLogistica, compRodarSimulacao, "usa")
+    Rel(pLogistica, compAprovarResultado, "usa")
+
+    ' Relações entre componentes
+    Rel(compCadViagens, compNomearVolume, "apóia")
+    Rel(compCadViagens,compAlocarPO, "apóia")
+    Rel(compCadViagens,compServSimulacao, "apóia")
+    Rel(compAvail,compNomearVolume, "apóia")
+    Rel(compAvail,compServSimulacao, "apóia")
+    Rel(compAprovalPO,compAlocarPO, "apóia")
+    Rel(compAprovalPO,compServSimulacao, "apóia")
+    Rel(compRodarSimulacao, compServSimulacao,"usa")
+    Rel(compAprovarResultado, compServSimulacao,"usa")
+    Rel(compServSimulacao, compAlocarPO, "usa")
+    Rel(compServSimulacao, compNomearVolume, "usa")
+
+    Rel(compServSimulacao, compServNotificacoes, "informa")
+    Rel(compAlocarPO, compServNotificacoes, "informa")
+    Rel(compNomearVolume, compServNotificacoes, "informa")
+
+    ' Relações entre componentes e containers
+    ' Relações entre componentes e sistemas
+}
+@enduml

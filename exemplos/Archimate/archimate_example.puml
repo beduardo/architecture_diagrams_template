@@ -1,0 +1,102 @@
+@startuml
+
+!include ../../deps/archimate_puml/Archimate.puml
+
+scale 2000 width
+header Archimate - Technology View
+left footer [Empresa do Documento]
+title Deployment
+
+' Elementos
+Grouping(userEnvironment, "User Environment") {
+    ' Elementos
+    Technology_Device(userDevice, "User Device")
+    Technology_SystemSoftware(googleChrome86, "Google Chrome 86")
+    Technology_SystemSoftware(firefox83, "Mozilla Firefox 83")
+    Technology_SystemSoftware(microsoftEdge86, "Microsoft Edge 86")
+    Technology_SystemSoftware(appleSafari131, "Apple Safari 13.1")
+    Technology_SystemSoftware(iosSafari12, "iOS Safari 12")
+
+    ' Relações
+    Rel_Composition(userDevice, googleChrome86)
+    Rel_Composition(userDevice, firefox83)
+    Rel_Composition(userDevice, microsoftEdge86)
+    Rel_Composition(userDevice, appleSafari131)
+    Rel_Composition(userDevice, iosSafari12)
+}
+
+Grouping(poacEnvironment, "PO/AC Environment") {
+    ' Elementos
+    Technology_Node(webApp, "WebApp")
+    Technology_Artifact(poacSolutionDockerImage, "PO/AC Solution Docker Image")
+    Technology_Artifact(dotnetAssemblies, "PO/AC Solution Docker Image")
+    Technology_Artifact(poacSolutionDockerImage, "C# 8.0 ASP.Net Core 3.1 assemblies")
+    Technology_Artifact(baseImageDotnet, "base: mcr.microsoft.com/dotnet/aspnet:3.1")
+    Technology_Device(deviceStandardB1, "Standard B1 - 100ACU, 1.75GB memory")
+    Technology_Node(azureSQL, "Azure SQL")
+
+    'Relações
+    Rel_Assignment(webApp, poacSolutionDockerImage)
+    Rel_Composition(poacSolutionDockerImage, dotnetAssemblies)
+    Rel_Composition(poacSolutionDockerImage, baseImageDotnet)
+    Rel_Composition(webApp, deviceStandardB1)
+}
+
+Grouping(sendgridEnvironment, "Sendgrid Datacenter") {
+    ' Elementos
+    Technology_Node(sendgrid, "SendGrid")
+
+}
+
+Grouping(pushAlertEnvironment, "PushAlert Datacenter") {
+    ' Elementos
+    Technology_Node(pushalert, "PushAlert")
+
+}
+
+Technology_Function(smtpSendgrid, "SMTP")
+Technology_Service(emailDelivery, "e-Mail Delivery")
+Technology_Function(httpPushAlert, "HTTP")
+Technology_Service(pushDelivery, "Push Delivery")
+Technology_Function(rdbms, "RDBMS")
+Technology_Service(databaseManagement, "PO/AC Database Management")
+
+Application_Service(poacServices, "PO/AC Services")
+Application_Function(poacModules, "PO/AC Modules")
+Application_Interface(poacFrontends, "PO/AC Frontends")
+Application_Component(poacComponent, "PO/AC")
+
+Technology_Service(poacExploitation, "PO/AC Exploitation")
+
+Technology_Function(applicationHTTPService, "Application HTTP Service")
+Technology_Service(jsonRESTApi, "JSON REST API")
+Technology_Interface(html5_js16, "HTML 5 + JS 1.6")
+
+'Relações
+Rel_Realization_Up(sendgrid, smtpSendgrid)
+Rel_Realization_Up(smtpSendgrid, emailDelivery)
+
+Rel_Realization_Up(pushalert, httpPushAlert)
+Rel_Realization_Up(httpPushAlert, pushDelivery)
+
+Rel_Realization_Up(azureSQL, rdbms)
+Rel_Realization_Up(rdbms, databaseManagement)
+
+Rel_Composition(poacExploitation, emailDelivery)
+Rel_Composition(poacExploitation, pushDelivery)
+Rel_Composition_Up(databaseManagement, poacExploitation)
+
+Rel_Realization_Up(webApp, applicationHTTPService)
+
+Rel_Realization_Up(applicationHTTPService, jsonRESTApi)
+Rel_Serving_Up(applicationHTTPService, html5_js16)
+Rel_Composition_Up(jsonRESTApi, poacExploitation)
+
+Rel_Realization_Up(html5_js16, poacFrontends)
+Rel_Serving_Up(userDevice, poacFrontends)
+
+Rel_Assignment_Up(poacFrontends, poacServices)
+Rel_Composition_Right(poacFrontends, poacComponent)
+Rel_Assignment_Up(poacComponent, poacModules)
+Rel_Realization_Left(poacModules, poacServices)
+@enduml

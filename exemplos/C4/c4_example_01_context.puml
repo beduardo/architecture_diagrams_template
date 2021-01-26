@@ -1,0 +1,30 @@
+@startuml 01_Visualizacao_De_Contextos_Visao_Geral
+!include ../../deps/c4_model/C4_Context.puml
+
+HIDE_STEREOTYPE()
+
+scale 2000 width
+header Visualização de Contexto
+left footer [Empresa do Documento]
+title Visão Geral
+
+Person(pProducao, "Produção")
+Person(pLogistica, "Logística")
+Person(pAC, "AC")
+Person(pBO, "BO")
+Person(pVendas, "Vendas")
+System(sPOAC, "PO AC", "Sistema de Gerenciamento")
+
+System_Ext(sSendGrid, "SendGrid", "Envio de e-Mails")
+System_Ext(sPushAlert, "PushAlert", "Envio de Push")
+System_Ext(sMonitor, "Application Insights", "Monitoramento de Aplicações")
+
+Rel(pProducao, sPOAC, "Usa")
+Rel(pLogistica, sPOAC, "Usa")
+Rel(pAC, sPOAC, "Usa")
+Rel(pBO, sPOAC, "Usa")
+Rel(pVendas, sPOAC, "Usa")
+Rel(sPOAC, sSendGrid, "E-Mails", "HTTP")
+Rel(sPOAC, sPushAlert, "Push", "HTTP")
+Rel(sPOAC, sMonitor, "Telemetria", "HTTP")
+@enduml

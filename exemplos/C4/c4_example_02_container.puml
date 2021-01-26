@@ -1,0 +1,35 @@
+@startuml 02_Visualizacao_De_Containers_Visao_Geral
+!include ../../deps/c4_model/C4_Container.puml
+
+HIDE_STEREOTYPE()
+
+scale 2000 width
+header Visualização de Containers
+left footer [Empresa do Documento]
+title Visão Geral
+
+Person(pProducao, "Produção")
+Person(pLogistica, "Logística")
+Person(pAC, "AC")
+Person(pBO, "BO")
+Person(pVendas, "Vendas")
+System_Boundary(bPOAC, "PO AC"){
+    Container(cMVC, "MVC Application", "ASP.Net Core", "Aplicação PO/AC")
+    ContainerDb(cSQL, "Azure SQL Database", "SQL Server 2019", "Base de Dados")
+    ContainerDb(cBLOB, "Storage", "Azure Blob Storage", "Repositório de Arquivos")
+}
+System_Ext(sSendGrid, "SendGrid", "Envio de e-Mails")
+System_Ext(sPushAlert, "PushAlert", "Envio de Push")
+System_Ext(sMonitor, "Application Insights", "Monitoramento de Aplicações")
+
+Rel(pLogistica, cMVC, "Usa")
+Rel(pProducao, cMVC, "Usa")
+Rel(pAC, cMVC, "Usa")
+Rel(pBO, cMVC, "Usa")
+Rel(pVendas, cMVC, "Usa")
+Rel(cMVC, cSQL, "Lê / Escreve")
+Rel(cMVC, cBLOB, "Envia")
+Rel(cMVC, sSendGrid, "E-Mails", "HTTP")
+Rel(cMVC, sPushAlert, "Push", "HTTP")
+Rel(cMVC, sMonitor, "Telemetria", "HTTP")
+@enduml

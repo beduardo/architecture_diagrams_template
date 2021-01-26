@@ -1,0 +1,30 @@
+@startuml casos_de_uso_manutencao
+left to right direction
+
+scale 2000 width
+header Casos de Uso
+left footer [Empresa do Documento]
+title Casos de Uso de Manutenção
+
+:Time AC: as ac
+:Time BO: as bo
+:Time Vendas: as vendas
+
+ac --> (Manter Produtos)
+ac --> (Manter Destinos)
+ac --> (Manter Portos)
+ac --> (Manter Armadores)
+
+bo --> (Manter Bancos)
+
+vendas --> (Manter Clientes)
+
+(Manter Armadores) <.. (Manter Navios) : <<extends>>
+(Manter Portos) <.. (Manter Terminais de Carga) : <<extends>>
+(Manter Portos) <.. (Manter Portos Próximos) : <<extends>>
+
+(Manter Clientes) <.. (Manter Agentes Comerciais): <<extends>>
+(Manter Clientes) <.. (Manter Matriz de Substituição): <<extends>>
+
+
+@enduml

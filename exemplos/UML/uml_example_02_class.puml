@@ -1,0 +1,107 @@
+@startuml Dominio_Algoritmo
+
+scale 2000 width
+header Classes
+left footer [Empresa do Documento]
+title Domínio de apoio para simulação
+
+skinparam linetype polyline
+skinparam linetype ortho
+
+' Classes
+class Customer {
+    + priority : int
+}
+
+class CustomerPortLink {
+    + distance : float
+}
+
+class Load {
+    + quantity : float
+    + available : float
+}
+
+class Mill {
+
+}
+
+class MillPortLink {
+    + distance : float
+}
+
+class Order {
+    + totalQuantity : float
+    + remainingQuantity : float
+    + maxDeliveryDate : date
+    + allowBreakBulk : bool
+    + allowContainer : bool
+}
+
+class PO {
+    + receiptDate
+}
+
+class Port {
+
+}
+
+class Product {
+
+}
+class Shipping {
+
+}
+
+class ShippingLeg {
+    + departure : date
+    + arrival : date
+}
+
+class ShippingAlocation {
+    + quantity : float
+}
+
+class Volume {
+
+}
+
+' class Warehouse {
+
+' }
+
+' class Warehousing {
+'     + available : float
+' }
+
+' class WarehousingAlocation {
+'     + quantity : float
+' }
+
+
+' Relations
+ShippingLeg - Shipping
+Port - ShippingLeg
+
+Shipping -- ShippingAlocation
+ShippingAlocation -- Order
+
+Product - Order
+Order -- PO
+Customer - PO
+
+CustomerPortLink -- Customer
+Port -- CustomerPortLink
+
+Volume -- Product
+
+Mill -right- Volume
+
+MillPortLink -- Mill
+
+Port -- MillPortLink
+
+Load -- Volume
+
+ShippingLeg -- Load
+@enduml
